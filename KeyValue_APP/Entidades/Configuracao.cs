@@ -12,6 +12,5 @@ namespace KeyValue_APP.Entidades
         public DateTime CriadaEm { get; set; }
         public DateTime? AtualizadaEm { get; set; }
         public string Descricao { get; set; }
-
     }
 }
