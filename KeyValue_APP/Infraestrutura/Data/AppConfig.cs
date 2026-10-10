@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace KeyValue_APP.Infraestrutura
+namespace KeyValue_APP.Infraestrutura.Data
 {
     public class AppConfig
     {

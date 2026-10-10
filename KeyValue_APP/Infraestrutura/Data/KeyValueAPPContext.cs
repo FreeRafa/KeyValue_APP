@@ -1,21 +1,16 @@
 ﻿using KeyValue_APP.Entidades;
 using Microsoft.EntityFrameworkCore;
 
-
-namespace KeyValue_APP.Infraestrutura
+namespace KeyValue_APP.Infraestrutura.Data
 {
     public class KeyValueAPPContext : DbContext
     {
+        public KeyValueAPPContext(DbContextOptions<KeyValueAPPContext> options)
+            : base(options)
+        {
+        }
+
         public DbSet<Configuracao> Configuracoes { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(AppConfig.GetConnectionString());
-        }
-
-        public KeyValueAPPContext()
-        {
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,12 +22,15 @@ namespace KeyValue_APP.Infraestrutura
                       .HasMaxLength(100)
                       .IsRequired();
 
+                entity.HasIndex(c => c.Chave)
+                      .IsUnique();
+
                 entity.Property(c => c.Valor)
                       .HasMaxLength(250)
                       .IsRequired();
 
                 entity.Property(c => c.Descricao)
-                        .HasMaxLength(500);
+                      .HasMaxLength(500);
 
                 entity.Property(c => c.CriadaEm)
                       .HasDefaultValueSql("GETDATE()")
