@@ -36,10 +36,10 @@ namespace KeyValue_APP.Apresentacao
                         await AdicionarConfiguracaoAsync();
                         break;
                     case "2":
-                        //await ConsultarConfiguracaoPorChaveAsync();
+                        await ConsultarConfiguracaoPorChaveAsync();
                         break;
                     case "3":
-                        //await ConsultarTodasConfiguracoesAsync();
+                        await ConsultarTodasConfiguracoesAsync();
                         break;
                     case "4":
                         //await AlterarConfiguracaoAsync();
@@ -76,6 +76,48 @@ namespace KeyValue_APP.Apresentacao
             };
             await _keyValueAppServico.AdicionarConfiguracoesAsync(configuracao);
             Console.WriteLine("Configuração adicionada com sucesso!");
+        }
+
+        private async Task ConsultarConfiguracaoPorChaveAsync()
+        {
+            Console.WriteLine();
+            Console.WriteLine("=== Lista de Chaves ===");
+            var configuracoes = await _keyValueAppServico.ConsultarTodasConfiguracoesAsync();
+            if (configuracoes.Count == 0)
+            {
+                Console.WriteLine("Nenhuma configuração encontrada.");
+                return;
+            }
+            foreach (var config in configuracoes)
+            {
+                Console.WriteLine($"Chave: {config.Chave}, Valor: {config.Valor}, Descrição: {config.Descricao}");
+            }
+
+            Console.Write("Digite a chave da configuração: ");
+            string? chave = Console.ReadLine();
+            var configuracao = await _keyValueAppServico.ConsultarConfiguracaoPorChaveAsync(chave);
+            if (configuracao != null)
+            {
+                Console.WriteLine($"Chave: {configuracao.Chave}, Valor: {configuracao.Valor}, Descrição: {configuracao.Descricao}");
+            }
+            else
+            {
+                Console.WriteLine("Configuração não encontrada.");
+            }
+        }
+
+        private async Task ConsultarTodasConfiguracoesAsync()
+        {
+            var configuracoes = await _keyValueAppServico.ConsultarTodasConfiguracoesAsync();
+            if (configuracoes.Count == 0)
+            {
+                Console.WriteLine("Nenhuma configuração encontrada.");
+                return;
+            }
+            foreach (var configuracao in configuracoes)
+            {
+                Console.WriteLine($"Chave: {configuracao.Chave}, Valor: {configuracao.Valor}, Descrição: {configuracao.Descricao}");
+            }
         }
     }
 }

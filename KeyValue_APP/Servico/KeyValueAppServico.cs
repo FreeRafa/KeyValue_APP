@@ -19,5 +19,15 @@ namespace KeyValue_APP.Servico
         {
             return await KeyValueAPP_repositorio.AdicionarConfiguracoesAsync(configuracao);
         }
+
+        public async Task<Configuracao> ConsultarConfiguracaoPorChaveAsync(string chave)
+        {
+            return await KeyValueAPP_repositorio.ConsultarConfiguracaoPorChaveAsync(chave);
+        }
+
+        public async Task<List<Configuracao>> ConsultarTodasConfiguracoesAsync()
+        {
+            return await KeyValueAPP_repositorio.ConsultarTodasConfiguracoesAsync();
+        }
     }
 }
