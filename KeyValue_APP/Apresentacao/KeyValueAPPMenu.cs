@@ -42,10 +42,10 @@ namespace KeyValue_APP.Apresentacao
                         await ConsultarTodasConfiguracoesAsync();
                         break;
                     case "4":
-                        //await AlterarConfiguracaoAsync();
+                        await AlterarConfiguracaoAsync();
                         break;
                     case "5":
-                        //await RemoverConfiguracaoAsync();
+                        await RemoverConfiguracaoAsync();
                         break;
                     case "0":
                         return;
@@ -118,6 +118,38 @@ namespace KeyValue_APP.Apresentacao
             {
                 Console.WriteLine($"Chave: {configuracao.Chave}, Valor: {configuracao.Valor}, Descrição: {configuracao.Descricao}");
             }
+        }
+
+        private async Task AlterarConfiguracaoAsync()
+        {
+            Console.Write("Digite a chave da configuração que deseja alterar: ");
+            string? chave = Console.ReadLine();
+            var configuracao = await _keyValueAppServico.ConsultarConfiguracaoPorChaveAsync(chave);
+            if (configuracao == null)
+            {
+                Console.WriteLine("Configuração não encontrada.");
+                return;
+            }
+            Console.Write("Digite o novo valor da configuração: ");
+            string? novoValor = Console.ReadLine();
+            Console.Write("Digite a nova descrição da configuração: ");
+            string? novaDescricao = Console.ReadLine();
+            await _keyValueAppServico.AlterarConfiguracaoAsync(chave, novoValor, novaDescricao);
+            Console.WriteLine("Configuração alterada com sucesso!");
+        }
+
+        private async Task RemoverConfiguracaoAsync()
+        {
+            Console.Write("Digite a chave da configuração que deseja remover: ");
+            string? chave = Console.ReadLine();
+            var configuracao = await _keyValueAppServico.ConsultarConfiguracaoPorChaveAsync(chave);
+            if (configuracao == null)
+            {
+                Console.WriteLine("Configuração não encontrada.");
+                return;
+            }
+            await _keyValueAppServico.RemoverConfiguracaoAsync(chave);
+            Console.WriteLine("Configuração removida com sucesso!");
         }
     }
 }

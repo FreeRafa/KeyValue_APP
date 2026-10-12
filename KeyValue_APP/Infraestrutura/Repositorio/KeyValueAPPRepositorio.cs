@@ -43,5 +43,30 @@ namespace KeyValue_APP.Infraestrutura.Repositorio
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<Configuracao> AlterarConfiguracaoAsync(string chave, string novoValor, string novaDescricao)
+        {
+            var configuracao = await _context.Configuracoes.FirstOrDefaultAsync(c => c.Chave == chave);
+            if (configuracao != null)
+            {
+                configuracao.Valor = novoValor;
+                configuracao.Descricao = novaDescricao;
+                _context.Configuracoes.Update(configuracao);
+                await _context.SaveChangesAsync();
+            }
+            return configuracao;
+        }
+
+        public async Task<bool> RemoverConfiguracaoAsync(string chave)
+        {
+            var configuracao = await _context.Configuracoes.FirstOrDefaultAsync(c => c.Chave == chave);
+            if (configuracao != null)
+            {
+                _context.Configuracoes.Remove(configuracao);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
     }
 }
